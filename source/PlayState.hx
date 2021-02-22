@@ -1,17 +1,22 @@
 package;
 
 import flixel.FlxState;
-import flixel.text.FlxText;
 
 class PlayState extends FlxState
 {
+	// A class variable to represent the character in this
+	// scene.
+	private var _player:Player;
+
 	override public function create()
 	{
-		super.create();
+		// Create a new instance of the player at the point
+		// (50, 50) on the screen.
+		_player = new Player(50, 50);
+		// Add the player to the scene.
+		add(_player);
 
-		var text = new FlxText(0, 0, 0, "Hello World!", 64);
-		text.screenCenter();
-		add(text);
+		super.create();
 	}
 
 	override public function update(elapsed:Float)
