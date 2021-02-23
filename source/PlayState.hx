@@ -1,5 +1,7 @@
 package;
 
+import Projectile.ProjectileType;
+import flixel.FlxG;
 import flixel.FlxState;
 
 class PlayState extends FlxState
@@ -21,6 +23,20 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float)
 	{
+		shoot();
 		super.update(elapsed);
+	}
+
+	/**
+	 * Used to add a new projectile to the world every time the player presses the
+	 * left mouse button.
+	 */
+	private function shoot()
+	{
+		if (FlxG.mouse.justPressed)
+		{
+			var mousePos = FlxG.mouse.getPosition();
+			add(new Projectile(_player.x, _player.y, mousePos, ProjectileType.FIRE_BOLT));
+		}
 	}
 }
