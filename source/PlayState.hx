@@ -3,12 +3,14 @@ package;
 import Projectile.ProjectileType;
 import flixel.FlxG;
 import flixel.FlxState;
+import flixel.group.FlxGroup.FlxTypedGroup;
 
 class PlayState extends FlxState
 {
 	// A class variable to represent the character in this
 	// scene.
 	private var _player:Player;
+	private var _monsters:FlxTypedGroup<MeleeMonster>;
 
 	override public function create()
 	{
@@ -17,6 +19,16 @@ class PlayState extends FlxState
 		_player = new Player(50, 50);
 		// Add the player to the scene.
 		add(_player);
+
+		// Spawn some melee monsters as a test.
+		_monsters = new FlxTypedGroup<MeleeMonster>();
+		add(_monsters);
+
+		// Spawn 100 melee monsters in the world.
+		for (_ in 0...100)
+		{
+			_monsters.add(new MeleeMonster(Std.random(1000), Std.random(1000), _player));
+		}
 
 		super.create();
 	}

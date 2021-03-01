@@ -35,6 +35,9 @@
 
 	<haxelib name="flixel" />
 
+	<!--Used for random number generations-->
+	<haxelib name="random" />
+
 	<!--In case you want to use the addons package-->
 	<!-- <haxelib name="flixel-addons" /> -->
 
