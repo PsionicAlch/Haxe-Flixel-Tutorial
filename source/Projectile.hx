@@ -51,6 +51,11 @@ class Projectile extends FlxSprite
 		velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, _target, true));
 	}
 
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+	}
+
 	/**
 	 * Getter for the projectile type.
 	 * @return ProjectileType

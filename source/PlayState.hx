@@ -10,7 +10,8 @@ class PlayState extends FlxState
 	// A class variable to represent the character in this
 	// scene.
 	private var _player:Player;
-	private var _monsters:FlxTypedGroup<MeleeMonster>;
+	private var _monsters:FlxTypedGroup<RangedMonster>;
+	private var _elapsed:Float;
 
 	override public function create()
 	{
@@ -21,13 +22,13 @@ class PlayState extends FlxState
 		add(_player);
 
 		// Spawn some melee monsters as a test.
-		_monsters = new FlxTypedGroup<MeleeMonster>();
+		_monsters = new FlxTypedGroup<RangedMonster>();
 		add(_monsters);
 
 		// Spawn 100 melee monsters in the world.
 		for (_ in 0...100)
 		{
-			_monsters.add(new MeleeMonster(Std.random(1000), Std.random(1000), _player));
+			_monsters.add(new RangedMonster(Std.random(1000), Std.random(1000), _player, ProjectileType.FIRE_BOLT));
 		}
 
 		super.create();
@@ -36,6 +37,8 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		shoot();
+		_monsters.forEach(handleRangedAI);
+		this._elapsed = elapsed;
 		super.update(elapsed);
 	}
 
@@ -49,6 +52,15 @@ class PlayState extends FlxState
 		{
 			var mousePos = FlxG.mouse.getPosition();
 			add(new Projectile(_player.x, _player.y, mousePos, ProjectileType.FIRE_BOLT));
+		}
+	}
+
+	private function handleRangedAI(monster:RangedMonster):Void
+	{
+		if (monster.shouldFire(_elapsed))
+		{
+			var projectile = new Projectile(monster.x, monster.y, monster.getTarget().getPosition(), monster.getProjectileType());
+			add(projectile);
 		}
 	}
 }
