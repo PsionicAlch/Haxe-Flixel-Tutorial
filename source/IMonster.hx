@@ -1,9 +1,8 @@
+import flixel.FlxObject;
+
 /**
  * An interface to define the basic layout of all monsters.
  */
-
-import flixel.FlxObject;
-
 interface IMonster
 {
 	private var _damage_per_seconds:Float;

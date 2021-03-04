@@ -20,6 +20,7 @@ class Projectile extends FlxSprite
 
 	private var _target:FlxPoint;
 	private var _type:ProjectileType;
+	private var _durationAlive:Float;
 
 	/**
 	 * Used to create a new projectile that travels towards where the player
@@ -53,6 +54,7 @@ class Projectile extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		_durationAlive += elapsed;
 		super.update(elapsed);
 	}
 
@@ -63,5 +65,14 @@ class Projectile extends FlxSprite
 	public function getType():ProjectileType
 	{
 		return _type;
+	}
+
+	/**
+	 * Getter for the amount of time the projectile has been alive.
+	 * @return Float
+	 */
+	public function getDurationAlive():Float
+	{
+		return this._durationAlive;
 	}
 }
