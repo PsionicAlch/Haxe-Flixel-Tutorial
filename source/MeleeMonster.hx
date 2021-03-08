@@ -6,7 +6,7 @@ import flixel.util.FlxColor;
 /**
  * A class to represent the basic melee character.
  */
-class MeleeMonster extends FlxSprite implements IMonster
+class MeleeMonster extends FlxSprite
 {
 	private var _damage_per_seconds:Float; // The amount of damage the character can do.
 	private var _armor:Float; // The amount of armor they have.
