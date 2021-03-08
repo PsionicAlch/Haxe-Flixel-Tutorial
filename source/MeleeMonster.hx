@@ -6,7 +6,7 @@ import flixel.util.FlxColor;
 /**
  * A class to represent the basic melee character.
  */
-class MeleeMonster extends FlxSprite implements IMonster
+class MeleeMonster extends FlxSprite
 {
 	private var damage_per_seconds:Float; // The amount of damage the character can do.
 	private var armor:Float; // The amount of armor they have.
@@ -41,7 +41,4 @@ class MeleeMonster extends FlxSprite implements IMonster
 		// Tell the monster to head for the player.
 		FlxVelocity.moveTowardsPoint(this, target.getPosition(), Std.int(movement_speed));
 	}
-
-	// TODO: Implement attack patterns
-	private function Attack():Void {}
 }
