@@ -11,6 +11,7 @@ class RangedMonster extends FlxSprite
 	private var _projectileType:ProjectileType;
 	private var _lastShot:Float;
 	private var _shotVar:Float;
+	private var _shouldFire:Bool;
 
 	public function new(x:Float, y:Float, target:FlxObject, projectileType:ProjectileType)
 	{
@@ -21,8 +22,26 @@ class RangedMonster extends FlxSprite
 		this._projectileType = projectileType;
 		_lastShot = 0;
 		_shotVar = Random.float(0.5, 3);
+		_shouldFire = false;
 
 		makeGraphic(20, 20, FlxColor.BLUE);
+	}
+
+	override function update(elapsed:Float)
+	{
+		_lastShot += elapsed;
+
+		if (_lastShot >= _shotVar)
+		{
+			_lastShot = 0;
+			_shouldFire = true;
+		}
+		else
+		{
+			_shouldFire = false;
+		}
+
+		super.update(elapsed);
 	}
 
 	/**
@@ -44,20 +63,11 @@ class RangedMonster extends FlxSprite
 	}
 
 	/**
-	 * A function to dictate whether or not the monster should fire a shot.
-	 * @param elapsed Delta time.
-	 * @return Bool Whether or not the monster should fire a shot.
+	 * Getter for whether or not the monster should fire.
+	 * @return Bool
 	 */
-	public function shouldFire(elapsed:Float):Bool
+	public function getShouldFire():Bool
 	{
-		_lastShot += elapsed;
-
-		if (_lastShot >= _shotVar)
-		{
-			_lastShot = 0;
-			return true;
-		}
-
-		return false;
+		return _shouldFire;
 	}
 }
