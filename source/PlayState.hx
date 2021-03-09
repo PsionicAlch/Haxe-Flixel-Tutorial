@@ -11,7 +11,6 @@ class PlayState extends FlxState
 	// scene.
 	private var _player:Player;
 	private var _monsters:FlxTypedGroup<RangedMonster>;
-	private var _elapsed:Float;
 
 	override public function create()
 	{
@@ -37,8 +36,7 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		shoot();
-		_monsters.forEach(handleRangedAI);
-		this._elapsed = elapsed;
+		_monsters.forEach(handleMonsterFire);
 		super.update(elapsed);
 	}
 
@@ -55,9 +53,9 @@ class PlayState extends FlxState
 		}
 	}
 
-	private function handleRangedAI(monster:RangedMonster):Void
+	private function handleMonsterFire(monster:RangedMonster)
 	{
-		if (monster.shouldFire(_elapsed))
+		if (monster.getShouldFire())
 		{
 			var projectile = new Projectile(monster.x, monster.y, monster.getTarget().getPosition(), monster.getProjectileType());
 			add(projectile);
