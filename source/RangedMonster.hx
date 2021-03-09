@@ -24,7 +24,7 @@ class RangedMonster extends FlxSprite
 		_shotVar = Random.float(0.5, 3);
 		_shouldFire = false;
 
-		makeGraphic(20, 20, FlxColor.BLUE);
+		makeGraphic(20, 20, FlxColor.CYAN);
 	}
 
 	override function update(elapsed:Float)
