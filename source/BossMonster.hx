@@ -1,0 +1,139 @@
+import Projectile.ProjectileType;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.math.FlxVelocity;
+import flixel.util.FlxColor;
+
+class BossMonster extends FlxSprite
+{
+	private var _attackTimer:Float;
+	private var _attackCounter:Float;
+	private var _target:FlxObject;
+	private var _attackType:Int;
+	private var _projectileType:ProjectileType;
+	private var _projectileTimer:Float;
+	private var _projectileCounter:Float;
+	private var _shouldFire:Bool;
+
+	private static final MOVEMENT_SPEED:Int = 400;
+
+	public function new(x:Float, y:Float, target:FlxObject)
+	{
+		super(x, y);
+		_target = target;
+		_attackTimer = Random.float(1, 10);
+		_attackCounter = 0;
+		_attackType = Random.int(0, 9);
+		_projectileCounter = 0;
+		_projectileTimer = 0;
+		_shouldFire = false;
+
+		makeGraphic(60, 60, FlxColor.WHITE);
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		_attackCounter += elapsed;
+		_projectileCounter += elapsed;
+
+		if (_attackCounter >= _attackTimer)
+		{
+			_attackCounter = 0;
+			_attackTimer = Random.float(0, 10);
+			_attackType = Random.int(0, 9);
+		}
+
+		attack(_attackType);
+	}
+
+	public function getTarget():FlxObject
+	{
+		return _target;
+	}
+
+	public function setTarget(newTarget:FlxObject)
+	{
+		_target = newTarget;
+	}
+
+	public function getProjectileType():ProjectileType
+	{
+		return _projectileType;
+	}
+
+	public function getShouldFire():Bool
+	{
+		return _shouldFire;
+	}
+
+	private function attack(attackType:Int)
+	{
+		switch (attackType)
+		{
+			case 1:
+				moveToTarget();
+			case 2:
+				_projectileType = ProjectileType.FIRE_BOLT;
+				_projectileTimer = 0.3;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			case 3:
+				_projectileType = ProjectileType.ICE_BOLT;
+				_projectileTimer = 0.3;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			case 4:
+				_projectileType = ProjectileType.POISON_BOLT;
+				_projectileTimer = 0.3;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			case 5:
+				_projectileType = ProjectileType.SHOCK_BOLT;
+				_projectileTimer = 0.3;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			case 6:
+				_projectileType = ProjectileType.FIRE_BOLT;
+				_projectileTimer = 0.3;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			case 7:
+				_projectileType = ProjectileType.ICE_BOLT;
+				_projectileTimer = 0;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			case 8:
+				_projectileType = ProjectileType.POISON_BOLT;
+				_projectileTimer = 0;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			case 9:
+				_projectileType = ProjectileType.SHOCK_BOLT;
+				_projectileTimer = 0;
+				velocity.x = velocity.y = 0;
+				handleShooting();
+			default:
+				moveToTarget();
+		}
+	}
+
+	private function moveToTarget()
+	{
+		FlxVelocity.moveTowardsPoint(this, _target.getPosition(), MOVEMENT_SPEED);
+		_shouldFire = false;
+	}
+
+	private function handleShooting()
+	{
+		if (_projectileCounter >= _projectileTimer)
+		{
+			_shouldFire = true;
+			_projectileCounter = 0;
+		}
+		else
+		{
+			_shouldFire = false;
+		}
+	}
+}

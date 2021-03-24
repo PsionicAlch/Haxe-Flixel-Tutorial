@@ -9,7 +9,7 @@ class PlayState extends FlxState
 {
 	// A class variable to represent the character, monsters, delta time, and projectiles.
 	private var _player:Player;
-	private var _monsters:FlxTypedGroup<RangedMonster>;
+	private var _monsters:FlxTypedGroup<BossMonster>;
 	private var _projectiles:FlxTypedGroup<Projectile>;
 
 	override public function create()
@@ -25,13 +25,13 @@ class PlayState extends FlxState
 		add(_player);
 
 		// Spawn some melee monsters as a test.
-		_monsters = new FlxTypedGroup<RangedMonster>();
+		_monsters = new FlxTypedGroup<BossMonster>();
 		add(_monsters);
 
 		// Spawn 100 ranged monsters in the world.
-		for (_ in 0...100)
+		for (_ in 0...1)
 		{
-			_monsters.add(new RangedMonster(Std.random(1000), Std.random(1000), _player, ProjectileType.FIRE_BOLT));
+			_monsters.add(new BossMonster(Random.float(0, 500), Random.float(0, 500), _player));
 		}
 
 		super.create();
@@ -62,7 +62,7 @@ class PlayState extends FlxState
 	 * Handle shooting for the ranged units.
 	 * @param monster The ranged unit.
 	 */
-	private function handleMonsterFire(monster:RangedMonster):Void
+	private function handleMonsterFire(monster:BossMonster):Void
 	{
 		if (monster.getShouldFire())
 		{
