@@ -1,4 +1,5 @@
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.input.gamepad.id.SwitchJoyconLeftID;
 import flixel.math.FlxAngle;
@@ -55,7 +56,18 @@ class Projectile extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		_durationAlive += elapsed;
+
 		super.update(elapsed);
+	}
+
+	public function getTarget():FlxPoint
+	{
+		return _target;
+	}
+
+	public function setTarget(newTarget:FlxPoint)
+	{
+		_target = newTarget;
 	}
 
 	/**

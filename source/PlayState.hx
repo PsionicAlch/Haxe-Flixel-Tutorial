@@ -2,6 +2,7 @@ package;
 
 import Projectile.ProjectileType;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
@@ -9,7 +10,8 @@ class PlayState extends FlxState
 {
 	// A class variable to represent the character, monsters, delta time, and projectiles.
 	private var _player:Player;
-	private var _monsters:FlxTypedGroup<BossMonster>;
+	private var _rangedMonsters:FlxTypedGroup<RangedMonster>;
+	private var _meleeMonsters:FlxTypedGroup<MeleeMonster>;
 	private var _projectiles:FlxTypedGroup<Projectile>;
 
 	override public function create()
@@ -24,14 +26,19 @@ class PlayState extends FlxState
 		// Add the player to the scene.
 		add(_player);
 
-		// Spawn some melee monsters as a test.
-		_monsters = new FlxTypedGroup<BossMonster>();
-		add(_monsters);
+		// Spawn some ranged monsters.
+		_rangedMonsters = new FlxTypedGroup<RangedMonster>();
+		add(_rangedMonsters);
 
-		// Spawn 100 ranged monsters in the world.
-		for (_ in 0...1)
+		// Spawn some melee monsters.
+		_meleeMonsters = new FlxTypedGroup<MeleeMonster>();
+		add(_meleeMonsters);
+
+		// Spawn 10 ranged monsters in the world.
+		for (_ in 0...10)
 		{
-			_monsters.add(new BossMonster(Random.float(0, 500), Random.float(0, 500), _player));
+			_rangedMonsters.add(new RangedMonster(Random.float(0, 500), Random.float(0, 500), _player, ProjectileType.FIRE_BOLT));
+			_meleeMonsters.add(new MeleeMonster(Random.float(0, 500), Random.float(0, 500), _player));
 		}
 
 		super.create();
@@ -40,8 +47,15 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		shoot();
-		_monsters.forEach(handleMonsterFire);
+		_rangedMonsters.forEachAlive(handleRangedMonsters);
 		_projectiles.forEachExists(handleProjectiles);
+
+		// Check for colisions.
+		FlxG.collide(_player, _projectiles, handlePlayerProjectileCollisions);
+		FlxG.collide(_rangedMonsters, _projectiles, handleMonsterProjectileCollisions);
+		FlxG.collide(_meleeMonsters, _projectiles, handleMonsterProjectileCollisions);
+		FlxG.collide(_player, _meleeMonsters, handlePlayerMonsterCollisions);
+
 		super.update(elapsed);
 	}
 
@@ -62,7 +76,7 @@ class PlayState extends FlxState
 	 * Handle shooting for the ranged units.
 	 * @param monster The ranged unit.
 	 */
-	private function handleMonsterFire(monster:BossMonster):Void
+	private function handleRangedMonsters(monster:RangedMonster)
 	{
 		if (monster.getShouldFire())
 		{
@@ -71,11 +85,28 @@ class PlayState extends FlxState
 		}
 	}
 
+	private function handlePlayerProjectileCollisions(player:Player, projectil:Projectile)
+	{
+		player.setPosition(Random.float(0, 500));
+		projectil.kill();
+	}
+
+	private function handlePlayerMonsterCollisions(player:Player, monster:MeleeMonster)
+	{
+		player.setPosition(Random.float(0, 500));
+	}
+
+	private function handleMonsterProjectileCollisions(monster:FlxObject, projectil:Projectile)
+	{
+		monster.kill();
+		projectil.kill();
+	}
+
 	/**
 	 * Memory management for the projectiles.
 	 * @param projectile 
 	 */
-	private function handleProjectiles(projectile:Projectile):Void
+	private function handleProjectiles(projectile:Projectile)
 	{
 		if (projectile.getDurationAlive() >= 2)
 		{
