@@ -51,9 +51,9 @@ class PlayState extends FlxState
 		_projectiles.forEachExists(handleProjectiles);
 
 		// Check for colisions.
-		FlxG.collide(_player, _projectiles, handlePlayerProjectileCollisions);
-		FlxG.collide(_rangedMonsters, _projectiles, handleMonsterProjectileCollisions);
-		FlxG.collide(_meleeMonsters, _projectiles, handleMonsterProjectileCollisions);
+		FlxG.overlap(_player, _projectiles, handlePlayerProjectileCollisions);
+		FlxG.overlap(_rangedMonsters, _projectiles, handleMonsterProjectileCollisions);
+		FlxG.overlap(_meleeMonsters, _projectiles, handleMonsterProjectileCollisions);
 		FlxG.collide(_player, _meleeMonsters, handlePlayerMonsterCollisions);
 
 		super.update(elapsed);
@@ -68,7 +68,7 @@ class PlayState extends FlxState
 		if (FlxG.mouse.justPressed)
 		{
 			var mousePos = FlxG.mouse.getPosition();
-			_projectiles.add(new Projectile(_player.x, _player.y, mousePos, ProjectileType.FIRE_BOLT));
+			_projectiles.add(new Projectile(_player.x, _player.y, mousePos, ProjectileType.FIRE_BOLT, _player));
 		}
 	}
 
@@ -80,15 +80,18 @@ class PlayState extends FlxState
 	{
 		if (monster.getShouldFire())
 		{
-			var projectile = new Projectile(monster.x, monster.y, monster.getTarget().getPosition(), monster.getProjectileType());
+			var projectile = new Projectile(monster.x, monster.y, monster.getTarget().getPosition(), monster.getProjectileType(), monster);
 			_projectiles.add(projectile);
 		}
 	}
 
-	private function handlePlayerProjectileCollisions(player:Player, projectil:Projectile)
+	private function handlePlayerProjectileCollisions(player:Player, projectile:Projectile)
 	{
-		player.setPosition(Random.float(0, 500));
-		projectil.kill();
+		if (projectile.getSpawner() != player)
+		{
+			player.setPosition(Random.float(0, 500));
+			projectile.kill();
+		}
 	}
 
 	private function handlePlayerMonsterCollisions(player:Player, monster:MeleeMonster)
@@ -96,10 +99,13 @@ class PlayState extends FlxState
 		player.setPosition(Random.float(0, 500));
 	}
 
-	private function handleMonsterProjectileCollisions(monster:FlxObject, projectil:Projectile)
+	private function handleMonsterProjectileCollisions(monster:FlxObject, projectile:Projectile)
 	{
-		monster.kill();
-		projectil.kill();
+		if (projectile.getSpawner() == _player)
+		{
+			monster.kill();
+			projectile.kill();
+		}
 	}
 
 	/**

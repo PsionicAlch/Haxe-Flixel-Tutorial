@@ -22,6 +22,7 @@ class Projectile extends FlxSprite
 	private var _target:FlxPoint;
 	private var _type:ProjectileType;
 	private var _durationAlive:Float;
+	private var _spawner:FlxObject;
 
 	/**
 	 * Used to create a new projectile that travels towards where the player
@@ -31,11 +32,12 @@ class Projectile extends FlxSprite
 	 * @param target The point where the mouse was clicked.
 	 * @param type The type of projectile.
 	 */
-	public function new(x:Float, y:Float, target:FlxPoint, type:ProjectileType)
+	public function new(x:Float, y:Float, target:FlxPoint, type:ProjectileType, spawner:FlxObject)
 	{
 		super(x, y);
 		_target = target;
 		_type = type;
+		_spawner = spawner;
 
 		switch (type)
 		{
@@ -85,6 +87,11 @@ class Projectile extends FlxSprite
 	 */
 	public function getDurationAlive():Float
 	{
-		return this._durationAlive;
+		return _durationAlive;
+	}
+
+	public function getSpawner():FlxObject
+	{
+		return _spawner;
 	}
 }
