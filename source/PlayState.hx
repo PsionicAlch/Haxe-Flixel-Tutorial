@@ -35,7 +35,7 @@ class PlayState extends FlxState
 		add(_meleeMonsters);
 
 		// Spawn 10 ranged monsters in the world.
-		for (_ in 0...10)
+		for (_ in 0...0)
 		{
 			_rangedMonsters.add(new RangedMonster(Random.float(0, 500), Random.float(0, 500), _player, ProjectileType.FIRE_BOLT));
 			_meleeMonsters.add(new MeleeMonster(Random.float(0, 500), Random.float(0, 500), _player));

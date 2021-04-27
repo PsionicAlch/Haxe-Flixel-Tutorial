@@ -1,4 +1,5 @@
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
@@ -22,8 +23,24 @@ class Player extends FlxSprite
 	{
 		super(x, y);
 
-		// Give the player a temporary orange square to represent it.
-		makeGraphic(20, 20, FlxColor.ORANGE);
+		// Load the sprite sheet.
+		loadGraphic(AssetPaths.Player__png, true, 16, 16);
+		setFacingFlip(FlxObject.RIGHT, false, false);
+		setFacingFlip(FlxObject.LEFT, true, false);
+
+		// Set the animations.
+		animation.add("resting down", [0, 1, 2], 3, true);
+		animation.add("resting right", [3, 4, 5], 3, true);
+		animation.add("resting left", [3, 4, 5], 3, true);
+		animation.add("resting up", [6, 7, 8], 3, true);
+		animation.add("attack down", [9], 1, false);
+		animation.add("attack right", [10], 1, false);
+		animation.add("attack left", [10], 1, false);
+		animation.add("attack up", [11], 1, false);
+		animation.add("walking down", [12, 13, 14, 15], 4, true);
+		animation.add("walking right", [16, 17, 18, 19], 4, true);
+		animation.add("walking left", [16, 17, 18, 19], 4, true);
+		animation.add("walking up", [20, 21, 22, 23], 4, true);
 
 		// Set the player's X and Y drag so that they don't move forever.
 		drag.x = drag.y = 1600;
@@ -32,6 +49,7 @@ class Player extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		movement();
+		animate();
 
 		super.update(elapsed);
 	}
@@ -83,6 +101,8 @@ class Player extends FlxSprite
 				{
 					newAngle += 45;
 				}
+
+				facing = FlxObject.UP;
 			}
 			else if (down)
 			{
@@ -96,18 +116,54 @@ class Player extends FlxSprite
 				{
 					newAngle -= 45;
 				}
+
+				facing = FlxObject.DOWN;
 			}
 			else if (left)
 			{
 				newAngle = 180;
+				facing = FlxObject.LEFT;
 			}
 			else if (right)
 			{
 				newAngle = 0;
+				facing = FlxObject.RIGHT;
 			}
 
 			velocity.set(MOVEMENT_SPEED, 0);
 			velocity.rotate(FlxPoint.weak(0, 0), newAngle);
+		}
+	}
+
+	private function animate()
+	{
+		if (velocity.x != 0 || velocity.y != 0)
+		{
+			switch (facing)
+			{
+				case FlxObject.UP:
+					animation.play("walking up");
+				case FlxObject.LEFT:
+					animation.play("walking left");
+				case FlxObject.DOWN:
+					animation.play("walking down");
+				case FlxObject.RIGHT:
+					animation.play("walking right");
+			}
+		}
+		else if (velocity.x == 0 || velocity.y == 0)
+		{
+			switch (facing)
+			{
+				case FlxObject.UP:
+					animation.play("resting up");
+				case FlxObject.LEFT:
+					animation.play("resting left");
+				case FlxObject.DOWN:
+					animation.play("resting down");
+				case FlxObject.RIGHT:
+					animation.play("resting right");
+			}
 		}
 	}
 }
