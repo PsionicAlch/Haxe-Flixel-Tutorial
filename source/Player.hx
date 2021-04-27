@@ -166,4 +166,19 @@ class Player extends FlxSprite
 			}
 		}
 	}
+
+	public function fire()
+	{
+		switch (facing)
+		{
+			case FlxObject.UP:
+				animation.play("attack up");
+			case FlxObject.LEFT:
+				animation.play("attack left");
+			case FlxObject.DOWN:
+				animation.play("attack down");
+			case FlxObject.RIGHT:
+				animation.play("attack right");
+		}
+	}
 }

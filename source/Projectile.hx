@@ -42,17 +42,22 @@ class Projectile extends FlxSprite
 		switch (type)
 		{
 			case FIRE_BOLT:
-				makeGraphic(5, 5, FlxColor.RED);
+				loadGraphic(AssetPaths.Fire_Bolt__png, true, 16, 16);
 			case ICE_BOLT:
-				makeGraphic(5, 5, FlxColor.BLUE);
+				loadGraphic(AssetPaths.Ice_Bolt__png, true, 16, 16);
 			case POISON_BOLT:
-				makeGraphic(5, 5, FlxColor.GREEN);
+				loadGraphic(AssetPaths.Poison_Bolt__png, true, 16, 16);
 			case SHOCK_BOLT:
-				makeGraphic(5, 5, FlxColor.PURPLE);
+				loadGraphic(AssetPaths.Shock_Bolt__png, true, 16, 16);
 		}
+
+		animation.add("moving", [0, 1], 2, true);
+		animation.add("explosion", [2], 1, false);
 
 		velocity.set(MOVEMENT_SPEED, 0);
 		velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, _target, true));
+
+		animation.play("moving");
 	}
 
 	override function update(elapsed:Float)
@@ -93,5 +98,10 @@ class Projectile extends FlxSprite
 	public function getSpawner():FlxObject
 	{
 		return _spawner;
+	}
+
+	public function explode()
+	{
+		animation.play("explosion");
 	}
 }

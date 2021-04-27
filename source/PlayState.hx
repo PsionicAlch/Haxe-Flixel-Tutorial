@@ -38,7 +38,7 @@ class PlayState extends FlxState
 		add(_meleeMonsters);
 
 		// Spawn 10 ranged monsters in the world.
-		for (_ in 0...0)
+		for (_ in 0...10)
 		{
 			_rangedMonsters.add(new RangedMonster(Random.float(0, 500), Random.float(0, 500), _player, ProjectileType.FIRE_BOLT));
 			_meleeMonsters.add(new MeleeMonster(Random.float(0, 500), Random.float(0, 500), _player));
@@ -72,6 +72,7 @@ class PlayState extends FlxState
 		{
 			var mousePos = FlxG.mouse.getPosition();
 			_projectiles.add(new Projectile(_player.x, _player.y, mousePos, ProjectileType.FIRE_BOLT, _player));
+			_player.fire();
 		}
 	}
 
@@ -93,6 +94,7 @@ class PlayState extends FlxState
 		if (projectile.getSpawner() != player)
 		{
 			player.setPosition(Random.float(0, 500));
+			projectile.explode();
 			projectile.kill();
 		}
 	}
@@ -107,6 +109,7 @@ class PlayState extends FlxState
 		if (projectile.getSpawner() == _player)
 		{
 			monster.kill();
+			projectile.explode();
 			projectile.kill();
 		}
 	}
@@ -119,8 +122,8 @@ class PlayState extends FlxState
 	{
 		if (projectile.getDurationAlive() >= 2)
 		{
-			projectile.alive = false;
-			projectile.exists = false;
+			projectile.explode();
+			projectile.kill();
 		}
 	}
 }
