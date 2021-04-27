@@ -26,6 +26,9 @@ class PlayState extends FlxState
 		// Add the player to the scene.
 		add(_player);
 
+		// Tell camera to follow the player.
+		FlxG.camera.follow(_player, TOPDOWN, 1);
+
 		// Spawn some ranged monsters.
 		_rangedMonsters = new FlxTypedGroup<RangedMonster>();
 		add(_rangedMonsters);
