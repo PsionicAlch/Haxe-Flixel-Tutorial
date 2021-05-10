@@ -1,4 +1,5 @@
-import Projectile.ProjectileType;
+import MonsterProjectile.MonsterProjectileType;
+import MonsterProjectile;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
@@ -8,12 +9,12 @@ class RangedMonster extends FlxSprite
 	// The basic variables of each ranged monster.
 	private var _armor:Float;
 	private var _target:FlxObject;
-	private var _projectileType:ProjectileType;
+	private var _projectileType:MonsterProjectileType;
 	private var _lastShot:Float;
 	private var _shotVar:Float;
 	private var _shouldFire:Bool;
 
-	public function new(x:Float, y:Float, target:FlxObject, projectileType:ProjectileType)
+	public function new(x:Float, y:Float, target:FlxObject, projectileType:MonsterProjectileType)
 	{
 		super(x, y);
 
@@ -57,7 +58,7 @@ class RangedMonster extends FlxSprite
 	 * Getter for the type of projectile the monster uses.
 	 * @return ProjectileType
 	 */
-	public function getProjectileType():ProjectileType
+	public function getProjectileType():MonsterProjectileType
 	{
 		return this._projectileType;
 	}

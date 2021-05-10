@@ -1,13 +1,8 @@
-import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.input.gamepad.id.SwitchJoyconLeftID;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
-import flixel.math.FlxVelocity;
-import flixel.util.FlxColor;
 
-enum ProjectileType
+enum PlayerProjectileType
 {
 	FIRE_BOLT;
 	ICE_BOLT;
@@ -15,14 +10,13 @@ enum ProjectileType
 	SHOCK_BOLT;
 }
 
-class Projectile extends FlxSprite
+class PlayerProjectile extends FlxSprite
 {
 	private static inline var MOVEMENT_SPEED:Float = 600;
 
 	private var _target:FlxPoint;
-	private var _type:ProjectileType;
+	private var _type:PlayerProjectileType;
 	private var _durationAlive:Float;
-	private var _spawner:FlxObject;
 
 	/**
 	 * Used to create a new projectile that travels towards where the player
@@ -32,12 +26,11 @@ class Projectile extends FlxSprite
 	 * @param target The point where the mouse was clicked.
 	 * @param type The type of projectile.
 	 */
-	public function new(x:Float, y:Float, target:FlxPoint, type:ProjectileType, spawner:FlxObject)
+	public function new(x:Float, y:Float, target:FlxPoint, type:PlayerProjectileType)
 	{
 		super(x, y);
 		_target = target;
 		_type = type;
-		_spawner = spawner;
 
 		switch (type)
 		{
@@ -53,6 +46,9 @@ class Projectile extends FlxSprite
 
 		animation.add("moving", [0, 1], 2, true);
 		animation.add("explosion", [2], 1, false);
+
+		setSize(4, 4);
+		offset.set(6, 6);
 
 		velocity.set(MOVEMENT_SPEED, 0);
 		velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, _target, true));
@@ -81,7 +77,7 @@ class Projectile extends FlxSprite
 	 * Getter for the projectile type.
 	 * @return ProjectileType
 	 */
-	public function getType():ProjectileType
+	public function getType():PlayerProjectileType
 	{
 		return _type;
 	}
@@ -93,11 +89,6 @@ class Projectile extends FlxSprite
 	public function getDurationAlive():Float
 	{
 		return _durationAlive;
-	}
-
-	public function getSpawner():FlxObject
-	{
-		return _spawner;
 	}
 
 	public function explode()

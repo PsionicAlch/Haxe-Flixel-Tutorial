@@ -1,6 +1,9 @@
 package;
 
-import Projectile.ProjectileType;
+import MonsterProjectile.MonsterProjectile;
+import MonsterProjectile.MonsterProjectileType;
+import PlayerProjectile.PlayerProjectile;
+import PlayerProjectile.PlayerProjectileType;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
@@ -12,13 +15,18 @@ class PlayState extends FlxState
 	private var _player:Player;
 	private var _rangedMonsters:FlxTypedGroup<RangedMonster>;
 	private var _meleeMonsters:FlxTypedGroup<MeleeMonster>;
-	private var _projectiles:FlxTypedGroup<Projectile>;
+	private var _playerProjectiles:FlxTypedGroup<PlayerProjectile>;
+	private var _monsterProjectiles:FlxTypedGroup<MonsterProjectile>;
 
 	override public function create()
 	{
-		// Create and add a new group of projectiles.
-		_projectiles = new FlxTypedGroup<Projectile>();
-		add(_projectiles);
+		// Create and add a new group of player projectiles.
+		_playerProjectiles = new FlxTypedGroup<PlayerProjectile>();
+		add(_playerProjectiles);
+
+		// Create and add a new group of monster projectiles.
+		_monsterProjectiles = new FlxTypedGroup<MonsterProjectile>();
+		add(_monsterProjectiles);
 
 		// Create a new instance of the player at the point
 		// (50, 50) on the screen.
@@ -40,7 +48,7 @@ class PlayState extends FlxState
 		// Spawn 10 ranged monsters in the world.
 		for (_ in 0...10)
 		{
-			_rangedMonsters.add(new RangedMonster(Random.float(0, 500), Random.float(0, 500), _player, ProjectileType.FIRE_BOLT));
+			_rangedMonsters.add(new RangedMonster(Random.float(0, 500), Random.float(0, 500), _player, MonsterProjectileType.FIRE_BOLT));
 			_meleeMonsters.add(new MeleeMonster(Random.float(0, 500), Random.float(0, 500), _player));
 		}
 
@@ -51,12 +59,13 @@ class PlayState extends FlxState
 	{
 		shoot();
 		_rangedMonsters.forEachAlive(handleRangedMonsters);
-		_projectiles.forEachExists(handleProjectiles);
+		_playerProjectiles.forEachExists(handlePlayerProjectiles);
+		_monsterProjectiles.forEachExists(handleMonsterProjectiles);
 
 		// Check for colisions.
-		FlxG.overlap(_player, _projectiles, handlePlayerProjectileCollisions);
-		FlxG.overlap(_rangedMonsters, _projectiles, handleMonsterProjectileCollisions);
-		FlxG.overlap(_meleeMonsters, _projectiles, handleMonsterProjectileCollisions);
+		FlxG.collide(_player, _monsterProjectiles, handlePlayerProjectileCollisions);
+		FlxG.collide(_rangedMonsters, _playerProjectiles, handleMonsterProjectileCollisions);
+		FlxG.collide(_meleeMonsters, _playerProjectiles, handleMonsterProjectileCollisions);
 		FlxG.collide(_player, _meleeMonsters, handlePlayerMonsterCollisions);
 
 		super.update(elapsed);
@@ -71,7 +80,7 @@ class PlayState extends FlxState
 		if (FlxG.mouse.justPressed)
 		{
 			var mousePos = FlxG.mouse.getPosition();
-			_projectiles.add(new Projectile(_player.x, _player.y, mousePos, ProjectileType.FIRE_BOLT, _player));
+			_playerProjectiles.add(new PlayerProjectile(_player.x, _player.y, mousePos, PlayerProjectileType.FIRE_BOLT));
 			_player.fire();
 		}
 	}
@@ -84,19 +93,15 @@ class PlayState extends FlxState
 	{
 		if (monster.getShouldFire())
 		{
-			var projectile = new Projectile(monster.x, monster.y, monster.getTarget().getPosition(), monster.getProjectileType(), monster);
-			_projectiles.add(projectile);
+			var projectile = new MonsterProjectile(monster.x, monster.y, monster.getTarget().getPosition(), monster.getProjectileType());
+			_monsterProjectiles.add(projectile);
 		}
 	}
 
-	private function handlePlayerProjectileCollisions(player:Player, projectile:Projectile)
+	private function handlePlayerProjectileCollisions(player:Player, projectile:MonsterProjectile)
 	{
-		if (projectile.getSpawner() != player)
-		{
-			player.setPosition(Random.float(0, 500));
-			projectile.explode();
-			projectile.kill();
-		}
+		player.setPosition(0, 0);
+		projectile.kill();
 	}
 
 	private function handlePlayerMonsterCollisions(player:Player, monster:MeleeMonster)
@@ -104,21 +109,30 @@ class PlayState extends FlxState
 		player.setPosition(Random.float(0, 500));
 	}
 
-	private function handleMonsterProjectileCollisions(monster:FlxObject, projectile:Projectile)
+	private function handleMonsterProjectileCollisions(monster:FlxObject, projectile:PlayerProjectile)
 	{
-		if (projectile.getSpawner() == _player)
+		monster.kill();
+		projectile.kill();
+	}
+
+	/**
+	 * Memory management for the player projectiles.
+	 * @param projectile 
+	 */
+	private function handlePlayerProjectiles(projectile:PlayerProjectile)
+	{
+		if (projectile.getDurationAlive() >= 2)
 		{
-			monster.kill();
 			projectile.explode();
 			projectile.kill();
 		}
 	}
 
 	/**
-	 * Memory management for the projectiles.
+	 * Memory management for the monster projectiles.
 	 * @param projectile 
 	 */
-	private function handleProjectiles(projectile:Projectile)
+	private function handleMonsterProjectiles(projectile:MonsterProjectile)
 	{
 		if (projectile.getDurationAlive() >= 2)
 		{
