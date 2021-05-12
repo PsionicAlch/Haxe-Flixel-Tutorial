@@ -6,7 +6,6 @@ import flixel.util.FlxColor;
 class RangedMonster extends FlxSprite
 {
 	// The basic variables of each ranged monster.
-	private var _armor:Float;
 	private var _target:FlxObject;
 	private var _projectileType:ProjectileType;
 	private var _lastShot:Float;
@@ -17,14 +16,33 @@ class RangedMonster extends FlxSprite
 	{
 		super(x, y);
 
-		_armor = 0;
+		switch (projectileType)
+		{
+			case FIRE_BOLT:
+				loadGraphic(AssetPaths.Dragon_Tower__png, true, 16, 16);
+				animation.add("idle", [0], 1, false);
+				animation.add("attack", [1, 2, 3], 3, false);
+			case ICE_BOLT:
+				loadGraphic(AssetPaths.Ice_Tower__png, true, 16, 16);
+				animation.add("idle", [0, 1, 2, 3], 4, true);
+				animation.add("attack", [4, 5, 6], 3, false);
+			case POISON_BOLT:
+				loadGraphic(AssetPaths.Poison_Tower__png, true, 16, 16);
+				animation.add("idle", [0, 1, 2, 3, 4, 5], 6, true);
+				animation.add("attack", [6, 7, 8], 3, false);
+			case SHOCK_BOLT:
+				loadGraphic(AssetPaths.Tesla_Tower__png, true, 16, 16);
+				animation.add("idle", [0], 1, false);
+				animation.add("attack", [1, 2, 3], 3, false);
+		}
+
+		animation.play("idle");
+
 		this._target = target;
 		this._projectileType = projectileType;
 		_lastShot = 0;
-		_shotVar = Random.float(0.5, 3);
+		_shotVar = 1.0;
 		_shouldFire = false;
-
-		makeGraphic(20, 20, FlxColor.CYAN);
 	}
 
 	override function update(elapsed:Float)
@@ -34,7 +52,13 @@ class RangedMonster extends FlxSprite
 		if (_lastShot >= _shotVar)
 		{
 			_lastShot = 0;
+			animation.play("attack");
+		}
+
+		if (animation.finished)
+		{
 			_shouldFire = true;
+			animation.play("idle");
 		}
 		else
 		{

@@ -40,10 +40,13 @@ class PlayState extends FlxState
 		add(_meleeMonsters);
 
 		// Spawn 10 ranged monsters in the world.
-		for (_ in 0...10)
+		for (_ in 0...1)
 		{
-			_rangedMonsters.add(new RangedMonster(Random.float(0, 500), Random.float(0, 500), _player, ProjectileType.FIRE_BOLT));
-			_meleeMonsters.add(new MeleeMonster(Random.float(0, 500), Random.float(0, 500), _player));
+			_rangedMonsters.add(new RangedMonster(10, 0, _player, ProjectileType.FIRE_BOLT));
+			_rangedMonsters.add(new RangedMonster(0, 10, _player, ProjectileType.ICE_BOLT));
+			_rangedMonsters.add(new RangedMonster(-10, 0, _player, ProjectileType.POISON_BOLT));
+			_rangedMonsters.add(new RangedMonster(0, -10, _player, ProjectileType.SHOCK_BOLT));
+			// _meleeMonsters.add(new MeleeMonster(Random.float(0, 500), Random.float(0, 500), _player));
 		}
 
 		super.create();
@@ -73,7 +76,7 @@ class PlayState extends FlxState
 		if (FlxG.mouse.justPressed)
 		{
 			var mousePos = FlxG.mouse.getPosition();
-			_projectiles.add(new Projectile(_player.x, _player.y, mousePos, ProjectileType.FIRE_BOLT, _player));
+			_projectiles.add(new Projectile(_player.getMidpoint().x, _player.getMidpoint().y, mousePos, ProjectileType.FIRE_BOLT, _player));
 			_player.fire();
 		}
 	}
@@ -86,7 +89,8 @@ class PlayState extends FlxState
 	{
 		if (monster.getShouldFire())
 		{
-			var projectile = new Projectile(monster.x, monster.y, monster.getTarget().getPosition(), monster.getProjectileType(), monster);
+			var projectile = new Projectile(monster.getMidpoint().x, monster.getMidpoint().y, monster.getTarget().getMidpoint(), monster.getProjectileType(),
+				monster);
 			_projectiles.add(projectile);
 		}
 	}
