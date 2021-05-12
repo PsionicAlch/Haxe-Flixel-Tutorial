@@ -16,6 +16,8 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
+		FlxG.worldBounds.set(-5000, -5000, 10000, 10000);
+
 		// Create and add a new group of projectiles.
 		_projectiles = new FlxTypedGroup<Projectile>();
 		add(_projectiles);
@@ -94,7 +96,6 @@ class PlayState extends FlxState
 		if (projectile.getSpawner() != player)
 		{
 			player.setPosition(Random.float(0, 500));
-			projectile.explode();
 			projectile.kill();
 		}
 	}
@@ -109,7 +110,6 @@ class PlayState extends FlxState
 		if (projectile.getSpawner() == _player)
 		{
 			monster.kill();
-			projectile.explode();
 			projectile.kill();
 		}
 	}
@@ -122,7 +122,6 @@ class PlayState extends FlxState
 	{
 		if (projectile.getDurationAlive() >= 2)
 		{
-			projectile.explode();
 			projectile.kill();
 		}
 	}

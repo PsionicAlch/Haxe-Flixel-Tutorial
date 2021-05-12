@@ -5,6 +5,7 @@ import flixel.input.gamepad.id.SwitchJoyconLeftID;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
 enum ProjectileType
@@ -54,6 +55,9 @@ class Projectile extends FlxSprite
 		animation.add("moving", [0, 1], 2, true);
 		animation.add("explosion", [2], 1, false);
 
+		setSize(4, 4);
+		offset.set(6, 6);
+
 		velocity.set(MOVEMENT_SPEED, 0);
 		velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, _target, true));
 
@@ -66,6 +70,16 @@ class Projectile extends FlxSprite
 
 		super.update(elapsed);
 	}
+
+	// override function kill()
+	// {
+	// 	alive = false;
+	// 	animation.play("explosion", true);
+	// 	if (animation.finished)
+	// 	{
+	// 		exists = false;
+	// 	}
+	// }
 
 	public function getTarget():FlxPoint
 	{
@@ -98,10 +112,5 @@ class Projectile extends FlxSprite
 	public function getSpawner():FlxObject
 	{
 		return _spawner;
-	}
-
-	public function explode()
-	{
-		animation.play("explosion");
 	}
 }
