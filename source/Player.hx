@@ -2,7 +2,6 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
-import flixel.util.FlxColor;
 
 /**
  * Class to represent the player character.
