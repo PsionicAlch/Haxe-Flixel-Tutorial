@@ -28,12 +28,18 @@ class BossMonster extends FlxSprite
 		_projectileTimer = 0;
 		_shouldFire = false;
 
-		makeGraphic(60, 60, FlxColor.WHITE);
+		loadGraphic(AssetPaths.Demon__png, true, 32, 32);
+		setFacingFlip(FlxObject.RIGHT, false, false);
+		setFacingFlip(FlxObject.LEFT, true, false);
+
+		animation.add("down", [1, 2, 3, 4, 5], 6, true);
+		animation.add("left", [6, 7, 8, 9, 10, 11, 12], 7, true);
+		animation.add("right", [6, 7, 8, 9, 10, 11, 12], 7, true);
+		animation.add("up", [13, 14, 15, 16, 17, 18], 6, true);
 	}
 
 	override function update(elapsed:Float)
 	{
-		super.update(elapsed);
 		_attackCounter += elapsed;
 		_projectileCounter += elapsed;
 
@@ -45,6 +51,10 @@ class BossMonster extends FlxSprite
 		}
 
 		attack(_attackType);
+
+		animate();
+
+		super.update(elapsed);
 	}
 
 	public function getTarget():FlxObject
@@ -121,6 +131,25 @@ class BossMonster extends FlxSprite
 	private function moveToTarget()
 	{
 		FlxVelocity.moveTowardsPoint(this, _target.getPosition(), MOVEMENT_SPEED);
+
+		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
+		{
+			if (Math.abs(velocity.x) > Math.abs(velocity.y))
+			{
+				if (velocity.x < 0)
+					facing = FlxObject.LEFT;
+				else
+					facing = FlxObject.RIGHT;
+			}
+			else
+			{
+				if (velocity.y < 0)
+					facing = FlxObject.UP;
+				else
+					facing = FlxObject.DOWN;
+			}
+		}
+
 		_shouldFire = false;
 	}
 
@@ -134,6 +163,38 @@ class BossMonster extends FlxSprite
 		else
 		{
 			_shouldFire = false;
+		}
+	}
+
+	private function animate()
+	{
+		if (velocity.x != 0 || velocity.y != 0)
+		{
+			switch (facing)
+			{
+				case FlxObject.UP:
+					animation.play("up");
+				case FlxObject.LEFT:
+					animation.play("left");
+				case FlxObject.DOWN:
+					animation.play("down");
+				case FlxObject.RIGHT:
+					animation.play("right");
+			}
+		}
+		else if (velocity.x == 0 || velocity.y == 0)
+		{
+			switch (facing)
+			{
+				case FlxObject.UP:
+					animation.play("up");
+				case FlxObject.LEFT:
+					animation.play("left");
+				case FlxObject.DOWN:
+					animation.play("down");
+				case FlxObject.RIGHT:
+					animation.play("right");
+			}
 		}
 	}
 }

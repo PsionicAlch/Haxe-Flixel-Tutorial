@@ -12,6 +12,7 @@ class PlayState extends FlxState
 	private var _player:Player;
 	private var _rangedMonsters:FlxTypedGroup<RangedMonster>;
 	private var _meleeMonsters:FlxTypedGroup<MeleeMonster>;
+	private var _bossMonster:BossMonster;
 	private var _projectiles:FlxTypedGroup<Projectile>;
 
 	override public function create()
@@ -39,12 +40,8 @@ class PlayState extends FlxState
 		_meleeMonsters = new FlxTypedGroup<MeleeMonster>();
 		add(_meleeMonsters);
 
-		// Spawn 10 ranged monsters in the world.
-		for (_ in 0...10)
-		{
-			_meleeMonsters.add(new MeleeMonster(Random.float(-500, 500), Random.float(-500, 500), _player, ZOMBIE));
-			_meleeMonsters.add(new MeleeMonster(Random.float(-500, 500), Random.float(-500, 500), _player, SKELETON));
-		}
+		_bossMonster = new BossMonster(0, 0, _player);
+		add(_bossMonster);
 
 		super.create();
 	}
@@ -54,8 +51,8 @@ class PlayState extends FlxState
 		shoot();
 		_rangedMonsters.forEachAlive(handleRangedMonsters);
 		_projectiles.forEachExists(handleProjectiles);
+		handleBossMonster(_bossMonster);
 
-		// Check for colisions.
 		FlxG.overlap(_player, _projectiles, handlePlayerProjectileCollisions);
 		FlxG.overlap(_rangedMonsters, _projectiles, handleMonsterProjectileCollisions);
 		FlxG.overlap(_meleeMonsters, _projectiles, handleMonsterProjectileCollisions);
@@ -83,6 +80,16 @@ class PlayState extends FlxState
 	 * @param monster The ranged unit.
 	 */
 	private function handleRangedMonsters(monster:RangedMonster)
+	{
+		if (monster.getShouldFire())
+		{
+			var projectile = new Projectile(monster.getMidpoint().x, monster.getMidpoint().y, monster.getTarget().getMidpoint(), monster.getProjectileType(),
+				monster);
+			_projectiles.add(projectile);
+		}
+	}
+
+	private function handleBossMonster(monster:BossMonster)
 	{
 		if (monster.getShouldFire())
 		{
