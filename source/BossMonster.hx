@@ -2,7 +2,6 @@ import Projectile.ProjectileType;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxVelocity;
-import flixel.util.FlxColor;
 
 class BossMonster extends FlxSprite
 {
@@ -14,6 +13,7 @@ class BossMonster extends FlxSprite
 	private var _projectileTimer:Float;
 	private var _projectileCounter:Float;
 	private var _shouldFire:Bool;
+	private var _stunVar:Float;
 
 	private static final MOVEMENT_SPEED:Int = 400;
 
@@ -27,6 +27,7 @@ class BossMonster extends FlxSprite
 		_projectileCounter = 0;
 		_projectileTimer = 0;
 		_shouldFire = false;
+		_stunVar = 0;
 
 		loadGraphic(AssetPaths.Demon__png, true, 32, 32);
 		setFacingFlip(FlxObject.RIGHT, false, false);
@@ -39,18 +40,30 @@ class BossMonster extends FlxSprite
 	}
 
 	override function update(elapsed:Float)
-	{
+	{		
 		_attackCounter += elapsed;
 		_projectileCounter += elapsed;
 
-		if (_attackCounter >= _attackTimer)
+		if (_stunVar <= 0.0) 
 		{
-			_attackCounter = 0;
-			_attackTimer = Random.float(0, 10);
-			_attackType = Random.int(0, 9);
+			if (_attackCounter >= _attackTimer)
+			{
+				_attackCounter = 0;
+				_attackTimer = Random.float(0.0, 10.0);
+				_attackType = Random.int(0, 9);
+			}
+
+			attack(_attackType);
+		}
+		else if (_stunVar > 0.0) 
+		{
+			_stunVar -= elapsed;
 		}
 
-		attack(_attackType);
+		if (_stunVar < 0) 
+		{
+			_stunVar = 0;
+		}
 
 		animate();
 
@@ -75,6 +88,10 @@ class BossMonster extends FlxSprite
 	public function getShouldFire():Bool
 	{
 		return _shouldFire;
+	}
+
+	public function stun() {
+		_stunVar = 2.0;
 	}
 
 	private function attack(attackType:Int)

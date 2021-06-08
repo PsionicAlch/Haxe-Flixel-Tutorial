@@ -56,7 +56,16 @@ class PlayState extends FlxState
 		FlxG.overlap(_player, _projectiles, handlePlayerProjectileCollisions);
 		FlxG.overlap(_rangedMonsters, _projectiles, handleMonsterProjectileCollisions);
 		FlxG.overlap(_meleeMonsters, _projectiles, handleMonsterProjectileCollisions);
+		FlxG.overlap(_bossMonster, _projectiles, (monster:BossMonster, projectile:Projectile) -> {
+			if (projectile.getSpawner() == _player) {
+				projectile.kill();
+				monster.stun();
+			}
+		});
 		FlxG.collide(_player, _meleeMonsters, handlePlayerMonsterCollisions);
+		FlxG.collide(_player, _bossMonster, (player: Player, monster: BossMonster) -> {
+			monster.stun();
+		});
 
 		super.update(elapsed);
 	}
