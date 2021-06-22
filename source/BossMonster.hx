@@ -91,7 +91,8 @@ class BossMonster extends FlxSprite
 	}
 
 	public function stun() {
-		_stunVar = 2.0;
+		if (_stunVar > 0.0)
+			_stunVar = 2.0;
 	}
 
 	private function attack(attackType:Int)
