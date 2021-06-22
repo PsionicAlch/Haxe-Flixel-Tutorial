@@ -10,23 +10,28 @@ class MenuState extends FlxState
 {
     private var title:FlxText;
     private var play:FlxButton;
+    private var testing:FlxButton;
     private var exit:FlxButton;
     
     override function create() 
     {
-        title = new FlxText(50, 0, 0, "Introduction to HaxeFlixel", 18);
+        title = new FlxText(0, 20, 0, "Introduction to HaxeFlixel", 18);
         title.alignment = CENTER;
         title.screenCenter(X);
         add(title);
 
+        testing = new FlxButton(0, 0, "Test", clickTest);
+        testing.screenCenter(XY);
+        add(testing);
+
         play = new FlxButton(0, 0, "Play", clickPlay);
-        play.x = (FlxG.width / 2) - (play.width / 2);
-		play.y = (FlxG.height / 2);
+        play.screenCenter(X);
+        play.y = testing.y - play.height - 2;
         add(play);
 
         exit = new FlxButton(0, 0, "Exit", clickExit);
-        exit.x = ((FlxG.width / 2) - exit.width / 2);
-		exit.y = (FlxG.height / 2) + play.height + 10;
+        exit.screenCenter(X);
+        exit.y = testing.y + exit.height + 2;
         add(exit);
 
         super.create();
@@ -36,6 +41,13 @@ class MenuState extends FlxState
     {
         FlxG.camera.fade(FlxColor.BLACK, 0.33, false, () -> {
             FlxG.switchState(new PlayState());
+        });
+    }
+
+    private function clickTest()
+    {
+        FlxG.camera.fade(FlxColor.BLACK, 0.33, false, () -> {
+            FlxG.switchState(new TestingMenuState());
         });
     }
 
