@@ -1,12 +1,7 @@
-import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.input.gamepad.id.SwitchJoyconLeftID;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
-import flixel.math.FlxVelocity;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
 
 enum ProjectileType
 {
