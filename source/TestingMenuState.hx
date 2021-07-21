@@ -35,14 +35,9 @@ class TestingMenuState extends FlxState
         meleeMap.y = rangedMap.y - meleeMap.height - 2;
         add(meleeMap);
 
-        mapRoom = new FlxButton(0, 0, "Map Room", clickMaproom);
-        mapRoom.screenCenter(X);
-        mapRoom.y = bossMap.y + mapRoom.height + 2;
-        add(mapRoom);
-
         back = new FlxButton(0, 0, "Go Back", clickBack);
         back.screenCenter(X);
-        back.y = mapRoom.y + back.height + 2;
+        back.y = bossMap.y + back.height + 2;
         add(back);
 
         super.create();
@@ -66,13 +61,6 @@ class TestingMenuState extends FlxState
     {
         FlxG.camera.fade(FlxColor.BLUE, 0.33, false, () -> {
             FlxG.switchState(new BossTestState());
-        });
-    }
-
-    private function clickMaproom()
-    {
-        FlxG.camera.fade(FlxColor.MAGENTA, 0.33, false, () -> {
-            FlxG.switchState(new MapRoomState());
         });
     }
 
