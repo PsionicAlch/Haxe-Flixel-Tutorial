@@ -40,7 +40,7 @@
       "exportID": "85677898",
       "exportMode": 0,
       "arrayMode": 0,
-      "defaultTileset": ""
+      "defaultTileset": "Walls and Floor"
     }
   ],
   "entities": [
@@ -118,6 +118,7 @@
     }
   ],
   "tilesets": [
-    {"label": "Walls and Floor", "path": "../images/WallsAndFloor.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAAXNSR0IArs4c6QAAARlJREFUSIljzC3t/c9AATAWvEqJdgYWGOPYkS0kabSy8WE4dmQLg7GvIsOuE4/IstzNQg7igGNHtjBY2fgw3L1PnG+UFbUxHCwvKUiS5Q+fv2dgYGBgYIIJHDuyhUFZUZtoy8WlFUmyEBeAR4G4tCLBkCDGcnV5XrwW3nz4GbsDCDmCFJ/jShNuFnIYYkzoAjBHIEcHOcEuLymIgnEBFmyCyCHBwMBA1ThHBxghgO4IGJtWAKcDYFFAbO6gqgOQ4xxbmiAFPHz+Hp7nsQGMNIAtwRGTRXEBbCkfpwPwpXZyHYGe79EBPAqIyWqURgc2wMLAgKhYiEntyCHx8ul9nOrwxTuGA2DZDZ+B6ABRTlxFsVBdnpdgvCMDAOm5h0IdKneQAAAAAElFTkSuQmCC", "tileWidth": 16, "tileHeight": 16, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
+    {"label": "Walls and Floor", "path": "../images/WallsAndFloor.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAAXNSR0IArs4c6QAAARlJREFUSIljzC3t/c9AATAWvEqJdgYWGOPYkS0kabSy8WE4dmQLg7GvIsOuE4/IstzNQg7igGNHtjBY2fgw3L1PnG+UFbUxHCwvKUiS5Q+fv2dgYGBgYIIJHDuyhUFZUZtoy8WlFUmyEBeAR4G4tCLBkCDGcnV5XrwW3nz4GbsDCDmCFJ/jShNuFnIYYkzoAjBHIEcHOcEuLymIgnEBFmyCyCHBwMBA1ThHBxghgO4IGJtWAKcDYFFAbO6gqgOQ4xxbmiAFPHz+Hp7nsQGMNIAtwRGTRXEBbCkfpwPwpXZyHYGe79EBPAqIyWqURgc2wMLAgKhYiEntyCHx8ul9nOrwxTuGA2DZDZ+B6ABRTlxFsVBdnpdgvCMDAOm5h0IdKneQAAAAAElFTkSuQmCC", "tileWidth": 16, "tileHeight": 16, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0},
+    {"label": "Walls and Floor 2", "path": "../images/WallsAndFloor.png", "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAQCAYAAABQrvyxAAAAAXNSR0IArs4c6QAAATFJREFUSIm1lrEKwjAQhn/FtUMnKYIlODg4uoh0dqqP4uhj+DadnEvxBRwcRCpIcXLwAXQoJ2lN06S5flBoS8Ldn/vv2gEc2e0PH5f9S//sFH/ktFsiSxOr9esoRpYmWG4Fjqd7p5ib1ZRHQJYmWEcxrjez05yJxZ/gMPCtYubFCwAwtNqlIUsTzMSidR0lP54IlrhsFhpPRGslTJKfh542ziV/V57ZBAB6ETYn39QTm9X07x2bhQgSIdupi23CwK9cTbBWgJArAYDV83XYK0CQCLrvi94EkIVMp1NXehEge17VEzbkxes381Ww94CqYU1GbBOqySPDKkA3bbqKqM/9OmwWMhmVrnZSwVIB+jEzmTZyJZ6PW+M6ne9l2H7mAGgTUu0pvxOlnSjheei1+l7mC68ch0LYRZEvAAAAAElFTkSuQmCC", "tileWidth": 16, "tileHeight": 16, "tileSeparationX": 0, "tileSeparationY": 0, "tileMarginX": 0, "tileMarginY": 0}
   ]
 }
