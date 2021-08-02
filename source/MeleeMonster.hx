@@ -1,3 +1,4 @@
+import flixel.util.FlxPath;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxVelocity;
@@ -59,6 +60,8 @@ class MeleeMonster extends FlxSprite
 				animation.add("walking left", [13, 14, 15, 16], 4, true);
 				animation.add("walking up", [17, 18, 19, 20], 4, true);
 		}
+
+		this.path = new FlxPath();
 	}
 
 	override function update(elapsed:Float)
@@ -75,7 +78,6 @@ class MeleeMonster extends FlxSprite
 	private function ai():Void
 	{
 		// Tell the monster to head for the player.
-		FlxVelocity.moveTowardsPoint(this, _target.getPosition(), Std.int(_movement_speed));
 
 		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
 		{
@@ -126,5 +128,15 @@ class MeleeMonster extends FlxSprite
 					animation.play("resting right");
 			}
 		}
+	}
+
+	public function move()
+	{
+		FlxVelocity.moveTowardsPoint(this, _target.getPosition(), Std.int(_movement_speed));
+	}
+
+	public function getMovementSpeed(): Float
+	{
+		return this._movement_speed;
 	}
 }

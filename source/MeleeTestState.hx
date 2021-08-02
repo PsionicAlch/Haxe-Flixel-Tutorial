@@ -1,3 +1,7 @@
+import flixel.math.FlxMath;
+import flixel.util.FlxPath;
+import haxe.Exception;
+import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
@@ -18,6 +22,9 @@ class MeleeTestState extends FlxState
     private var _ammountOfMonsters: Int;
     private var _monsterPos: Array<Position> = [];
     private var _playerRespawnPos: Position;
+    private var _leader: MeleeMonster;
+    private var _points: Array<FlxPoint>;
+    private var _pathFindingAlgo: Int = 0;
 
     override function create() {
         FlxG.worldBounds.set(-5000, -5000, 10000, 10000);
@@ -43,11 +50,11 @@ class MeleeTestState extends FlxState
         add(_meleeMonsters);
         _ammountOfMonsters = 0;
 
-        // for (_ in 0...1000)
-        // {
-        //     _meleeMonsters.add(new MeleeMonster(Random.float(-5000, 5000), Random.float(-5000, 5000), _player, MeleeType.ZOMBIE));
-        //     _meleeMonsters.add(new MeleeMonster(Random.float(-5000, 5000), Random.float(-5000, 5000), _player, MeleeType.SKELETON));
-        // }
+        if (_pathFindingAlgo == 1)
+        {
+            _leader = null;
+            _points = null;
+        }
 
         super.create();
     }
@@ -55,9 +62,13 @@ class MeleeTestState extends FlxState
     override function update(elapsed:Float) {
         spawnMonsters();
 
+        if (_pathFindingAlgo == 1)
+            findClosestMonster();
+
         shoot();
 
         _projectiles.forEachAlive(handleProjectiles);
+        _meleeMonsters.forEachAlive(handleMonsterMovement);
 
         FlxG.overlap(_meleeMonsters, _projectiles, handleMonsterProjectileCollisions);
         FlxG.collide(_player, _meleeMonsters, handlePlayerMonsterCollisions);
@@ -65,14 +76,19 @@ class MeleeTestState extends FlxState
         FlxG.collide(_player, _walls);
         FlxG.collide(_meleeMonsters, _walls);
 
+        if (_pathFindingAlgo == 1)
+            FlxG.collide(_leader, _walls);
+
         super.update(elapsed);
     }
 
     private function placePlayer(entity: EntityData)
     {
         if (entity.name == "player")
+        {
             _playerRespawnPos = new Position(entity.x, entity.y);
             _player.setPosition(entity.x, entity.y);
+        }
     }
 
     private function getMonsterLocations(entity: EntityData)
@@ -130,5 +146,39 @@ class MeleeTestState extends FlxState
     private function handleProjectilesWallsCollisions(projectile:Projectile, wall:FlxTilemap)
     {
         projectile.kill();
+    }
+
+    private function handleMonsterMovement(monster: MeleeMonster)
+    {
+        if (_pathFindingAlgo == 0)
+        {
+            monster.move();
+        }
+        else 
+        {
+            if (monster == _leader)
+                _points = _walls.findPath(FlxPoint.get(_leader.x + _leader.width / 2, _leader.y + _leader.height / 2), FlxPoint.get(_player.x + _player.width / 2, _player.y + _player.height / 2));
+    
+            if (_points != null)
+                monster.path.start(_points, monster.getMovementSpeed());
+        }
+    }
+
+    private function findClosestMonster()
+    {
+        _meleeMonsters.forEachAlive((monster: MeleeMonster) -> {
+            if (_leader == null) 
+            {
+                _leader = monster;
+            }
+            else 
+            {
+                var distanceBetweenLeaderAndPlayer = FlxMath.distanceBetween(_leader, _player);
+                var distanceBetweenMonsterAndPlayer = FlxMath.distanceBetween(monster, _player);
+
+                if (distanceBetweenMonsterAndPlayer < distanceBetweenLeaderAndPlayer)
+                    _leader = monster;
+            }
+        });
     }
 }
