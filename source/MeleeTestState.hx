@@ -1,3 +1,4 @@
+import flixel.util.FlxColor;
 import flixel.math.FlxMath;
 import flixel.util.FlxPath;
 import haxe.Exception;
@@ -66,6 +67,7 @@ class MeleeTestState extends FlxState
             findClosestMonster();
 
         shoot();
+        handleKeyboard();
 
         _projectiles.forEachAlive(handleProjectiles);
         _meleeMonsters.forEachAlive(handleMonsterMovement);
@@ -119,6 +121,13 @@ class MeleeTestState extends FlxState
             _projectiles.add(new Projectile(_player.getGraphicMidpoint().x, _player.getGraphicMidpoint().y, mousePos, ProjectileType.FIRE_BOLT, _player));
             _player.fire();
         }
+    }
+
+    private function handleKeyboard()
+    {
+        if (FlxG.keys.anyPressed([ESCAPE]))
+            openSubState(new PauseMenu(FlxColor.BLACK));
+            
     }
 
     private function handleProjectiles(projectile:Projectile)
