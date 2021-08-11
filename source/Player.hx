@@ -43,6 +43,8 @@ class Player extends FlxSprite
 
 		// Set the player's X and Y drag so that they don't move forever.
 		drag.x = drag.y = 1600;
+
+		health = 100;
 	}
 
 	override function update(elapsed:Float)

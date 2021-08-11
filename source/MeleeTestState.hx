@@ -1,7 +1,6 @@
+import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
-import flixel.util.FlxPath;
-import haxe.Exception;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 import flixel.tile.FlxTilemap;
@@ -26,6 +25,7 @@ class MeleeTestState extends FlxState
     private var _leader: MeleeMonster;
     private var _points: Array<FlxPoint>;
     private var _pathFindingAlgo: Int = 0;
+    private var _healthBar: FlxBar;
 
     override function create() {
         FlxG.worldBounds.set(-5000, -5000, 10000, 10000);
@@ -57,10 +57,23 @@ class MeleeTestState extends FlxState
             _points = null;
         }
 
+        _healthBar = new FlxBar(20, 20, LEFT_TO_RIGHT, 100, 10, _player, "health", 0, 100, true);
+        _healthBar.createFilledBar(FlxColor.RED, FlxColor.GREEN, true);
+        _healthBar.trackParent(20, -20);
+        add(_healthBar);
+
         super.create();
     }
 
     override function update(elapsed:Float) {
+        if (_player.health < 100) _player.health = _player.health + elapsed;
+
+        if (_player.health < 0)
+        {
+            _player.health = 100;
+            _player.setPosition(_playerRespawnPos.getX(), _playerRespawnPos.getY());
+        }
+        _healthBar.value = _player.health;
         spawnMonsters();
 
         if (_pathFindingAlgo == 1)
@@ -120,6 +133,7 @@ class MeleeTestState extends FlxState
             var mousePos = FlxG.mouse.getPosition();
             _projectiles.add(new Projectile(_player.getGraphicMidpoint().x, _player.getGraphicMidpoint().y, mousePos, ProjectileType.FIRE_BOLT, _player));
             _player.fire();
+            _player.health = _player.health - 1;
         }
     }
 
@@ -149,7 +163,7 @@ class MeleeTestState extends FlxState
 
     private function handlePlayerMonsterCollisions(player:Player, monster:MeleeMonster)
     {
-        player.setPosition(_playerRespawnPos.getX(), _playerRespawnPos.getY());
+        player.health = player.health - 10;
     }
 
     private function handleProjectilesWallsCollisions(projectile:Projectile, wall:FlxTilemap)
