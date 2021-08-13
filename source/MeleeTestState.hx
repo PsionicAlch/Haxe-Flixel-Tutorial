@@ -195,12 +195,21 @@ class MeleeTestState extends FlxState
         {
             monster.kill();
             projectile.kill();
+
+            switch (monster.getType())
+            {
+                case ZOMBIE:
+                    _soundEffects[6].play();
+                case SKELETON:
+                    _soundEffects[5].play();
+            }
         }
     }
 
     private function handlePlayerMonsterCollisions(player:Player, monster:MeleeMonster)
     {
         player.health = player.health - 10;
+        _soundEffects[4].play();
     }
 
     private function handleProjectilesWallsCollisions(projectile:Projectile, wall:FlxTilemap)

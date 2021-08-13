@@ -139,4 +139,9 @@ class MeleeMonster extends FlxSprite
 	{
 		return this._movement_speed;
 	}
+
+	public function getType(): MeleeType
+	{
+		return this._type;
+	}
 }
