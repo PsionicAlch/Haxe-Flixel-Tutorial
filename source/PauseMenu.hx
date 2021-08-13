@@ -25,16 +25,19 @@ class PauseMenu extends FlxSubState
       });
     });
     _menuBtn.screenCenter(XY);
+    _menuBtn.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
     add(_menuBtn);
 
     _backBtn = new FlxButton(0, 0, "Continue", () -> close());
     _backBtn.screenCenter(X);
     _backBtn.y = _menuBtn.y - _backBtn.height - 2;
+    _backBtn.onDown.sound = FlxG.sound.load(AssetPaths.button_press__wav);
     add(_backBtn);
 
     _desktopBtn = new FlxButton(0, 0, "Exit to Desktop", () -> Sys.exit(0));
     _desktopBtn.screenCenter(X);
     _desktopBtn.y = _menuBtn.y + _desktopBtn.height + 2;
+    _desktopBtn.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
     add(_desktopBtn);
   }
 }

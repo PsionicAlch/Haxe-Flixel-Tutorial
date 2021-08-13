@@ -23,22 +23,31 @@ class TestingMenuState extends FlxState
         rangedMap = new FlxButton(0, 0, "Ranged Map", clickRanged);
         rangedMap.screenCenter(XY);
         rangedMap.y = rangedMap.y - (rangedMap.height / 2) - 1;
+        rangedMap.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
         add(rangedMap);
 
         bossMap = new FlxButton(0, 0, "Boss Map", clickBoss);
         bossMap.screenCenter(XY);
         bossMap.y = bossMap.y + (bossMap.height / 2) + 1;
+        bossMap.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
         add(bossMap);
 
         meleeMap = new FlxButton(0, 0, "Melee Map", clickMelee);
         meleeMap.screenCenter(X);
         meleeMap.y = rangedMap.y - meleeMap.height - 2;
+        meleeMap.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
         add(meleeMap);
 
         back = new FlxButton(0, 0, "Go Back", clickBack);
         back.screenCenter(X);
         back.y = bossMap.y + back.height + 2;
+        back.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
         add(back);
+
+        if (FlxG.sound.music == null)
+        {
+            FlxG.sound.playMusic(AssetPaths.background_menu__ogg, 1, true);
+        }
 
         super.create();
     }
@@ -46,6 +55,7 @@ class TestingMenuState extends FlxState
     private function clickMelee()
     {
         FlxG.camera.fade(FlxColor.RED, 0.33, false, () -> {
+            FlxG.sound.destroy(true);
             FlxG.switchState(new MeleeTestState());
         });
     }
@@ -53,6 +63,7 @@ class TestingMenuState extends FlxState
     private function clickRanged()
     {
         FlxG.camera.fade(FlxColor.GREEN, 0.33, false, () -> {
+            FlxG.sound.destroy(true);
             FlxG.switchState(new RangedTestState());
         });
     }
@@ -60,6 +71,7 @@ class TestingMenuState extends FlxState
     private function clickBoss()
     {
         FlxG.camera.fade(FlxColor.BLUE, 0.33, false, () -> {
+            FlxG.sound.destroy(true);
             FlxG.switchState(new BossTestState());
         });
     }
@@ -67,6 +79,7 @@ class TestingMenuState extends FlxState
     private function clickBack()
     {
         FlxG.camera.fade(FlxColor.ORANGE, 0.33, false, () -> {
+            FlxG.sound.destroy(true);
             FlxG.switchState(new MenuState());
         });
     }

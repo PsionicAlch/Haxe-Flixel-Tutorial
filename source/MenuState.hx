@@ -22,17 +22,25 @@ class MenuState extends FlxState
 
         testing = new FlxButton(0, 0, "Test", clickTest);
         testing.screenCenter(XY);
+        testing.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
         add(testing);
 
         play = new FlxButton(0, 0, "Play", clickPlay);
         play.screenCenter(X);
         play.y = testing.y - play.height - 2;
+        play.onUp.sound = FlxG.sound.load(AssetPaths.button_press__wav);
         add(play);
 
         exit = new FlxButton(0, 0, "Exit", clickExit);
         exit.screenCenter(X);
         exit.y = testing.y + exit.height + 2;
+        exit.onDown.sound = FlxG.sound.load(AssetPaths.button_press__wav);
         add(exit);
+
+        if (FlxG.sound.music == null)
+        {
+            FlxG.sound.playMusic(AssetPaths.background_menu__ogg, 1, true);
+        }
 
         super.create();
     }
