@@ -1,3 +1,4 @@
+import flixel.system.FlxSound;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.math.FlxMath;
@@ -26,6 +27,8 @@ class MeleeTestState extends FlxState
     private var _points: Array<FlxPoint>;
     private var _pathFindingAlgo: Int = 0;
     private var _healthBar: FlxBar;
+    private var _backgroundMusic: Array<String>;
+    private var _soundEffects: Array<FlxSound>;
 
     override function create() {
         FlxG.worldBounds.set(-5000, -5000, 10000, 10000);
@@ -62,10 +65,32 @@ class MeleeTestState extends FlxState
         _healthBar.trackParent(20, -20);
         add(_healthBar);
 
+        _backgroundMusic = [
+            AssetPaths.gameplay_music_1__ogg,
+            AssetPaths.gameplay_music_2__ogg,
+            AssetPaths.gameplay_music_3__ogg,
+            AssetPaths.gameplay_music_4__ogg,
+            AssetPaths.gameplay_music_5__ogg,
+        ];
+
+        FlxG.sound.playMusic(_backgroundMusic[Random.int(0, _backgroundMusic.length - 1)], 1, false);
+        FlxG.sound.music.onComplete = () -> FlxG.sound.music = null;
+
+        _soundEffects = [
+            FlxG.sound.load(AssetPaths.fire_bolt__wav, 1, false),
+            FlxG.sound.load(AssetPaths.ice_bolt__wav, 1, false),
+            FlxG.sound.load(AssetPaths.poison_bolt__wav, 1, false),
+            FlxG.sound.load(AssetPaths.shock_bolt__wav, 1, false),
+            FlxG.sound.load(AssetPaths.player_getting_hit__wav, 1, false),
+            FlxG.sound.load(AssetPaths.skeleton_getting_hit__wav, 1, false),
+            FlxG.sound.load(AssetPaths.zombie_getting_hit__wav, 1, false)
+        ];
+
         super.create();
     }
 
     override function update(elapsed:Float) {
+        if (FlxG.sound.music == null) FlxG.sound.playMusic(_backgroundMusic[Random.int(0, _backgroundMusic.length - 1)], 1, false);
         if (_player.health < 100) _player.health = _player.health + elapsed;
 
         if (_player.health < 0)
@@ -131,9 +156,21 @@ class MeleeTestState extends FlxState
         if (FlxG.mouse.justPressed)
         {
             var mousePos = FlxG.mouse.getPosition();
-            _projectiles.add(new Projectile(_player.getGraphicMidpoint().x, _player.getGraphicMidpoint().y, mousePos, ProjectileType.FIRE_BOLT, _player));
+            _projectiles.add(new Projectile(_player.getGraphicMidpoint().x, _player.getGraphicMidpoint().y, mousePos, _player.getProjectileType(), _player));
             _player.fire();
             _player.health = _player.health - 1;
+
+            switch (_player.getProjectileType())
+            {
+                case FIRE_BOLT:
+                    _soundEffects[0].play();
+                case ICE_BOLT:
+                    _soundEffects[1].play();
+                case POISON_BOLT:
+                    _soundEffects[2].play();
+                case SHOCK_BOLT:
+                    _soundEffects[3].play();
+            }
         }
     }
 

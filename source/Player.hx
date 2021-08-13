@@ -1,3 +1,4 @@
+import Projectile.ProjectileType;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -11,6 +12,8 @@ class Player extends FlxSprite
 	// A constant to represent how fast the player can move.
 	static inline var MOVEMENT_SPEED:Float = 350;
 
+	private var _projectileType: ProjectileType;
+
 	/**
 	 * Player class' constructor. Used to set the player's initial position
 	 * along with a few other things we need to initialize when creating the 
@@ -18,7 +21,7 @@ class Player extends FlxSprite
 	 * @param x The X position of the player. 
 	 * @param y The Y position of the player.
 	 */
-	public function new(x:Float = 0, y:Float = 0)
+	public function new(x:Float = 0, y:Float = 0, ?projectileType = ProjectileType.FIRE_BOLT)
 	{
 		super(x, y);
 
@@ -45,6 +48,8 @@ class Player extends FlxSprite
 		drag.x = drag.y = 1600;
 
 		health = 100;
+
+		_projectileType = projectileType;
 	}
 
 	override function update(elapsed:Float)
@@ -181,5 +186,15 @@ class Player extends FlxSprite
 			case FlxObject.RIGHT:
 				animation.play("attack right");
 		}
+	}
+
+	public function setProjectileType(projectileType: ProjectileType)
+	{
+		this._projectileType = projectileType;
+	}
+
+	public function getProjectileType(): ProjectileType
+	{
+		return this._projectileType;
 	}
 }
