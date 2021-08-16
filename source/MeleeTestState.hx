@@ -7,7 +7,6 @@ import flixel.FlxObject;
 import flixel.tile.FlxTilemap;
 import flixel.addons.editors.ogmo.FlxOgmo3Loader;
 import MeleeMonster.MeleeType;
-import Projectile.ProjectileType;
 import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxState;
