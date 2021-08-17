@@ -37,6 +37,8 @@ class BossMonster extends FlxSprite
 		animation.add("left", [6, 7, 8, 9, 10, 11, 12], 7, true);
 		animation.add("right", [6, 7, 8, 9, 10, 11, 12], 7, true);
 		animation.add("up", [13, 14, 15, 16, 17, 18], 6, true);
+
+		health = 1000;
 	}
 
 	override function update(elapsed:Float)

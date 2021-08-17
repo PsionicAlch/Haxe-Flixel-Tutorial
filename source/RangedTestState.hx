@@ -81,7 +81,7 @@ class RangedTestState extends FlxState
         if (FlxG.sound.music == null) FlxG.sound.playMusic(_backgroundMusic[Random.int(0, _backgroundMusic.length - 1)], 1, false);
         if (_player.health < 100) _player.health = _player.health + elapsed;
 
-        if (_player.health < 0)
+        if (_player.health <= 0)
         {
             _player.health = 100;
             _player.setPosition(_playerRespawnPos.getX(), _playerRespawnPos.getY());
