@@ -19,7 +19,7 @@ class MeleeTestState extends FlxState
     private var _map:FlxOgmo3Loader;
     private var _walls:FlxTilemap;
     private var _maxMonsters = 2000;
-    private var _ammountOfMonsters: Int;
+    private var _amountOfMonsters: Int;
     private var _monsterPos: Array<Position> = [];
     private var _playerRespawnPos: Position;
     private var _leader: MeleeMonster;
@@ -29,7 +29,8 @@ class MeleeTestState extends FlxState
     private var _backgroundMusic: Array<String>;
     private var _soundEffects: Array<FlxSound>;
 
-    override function create() {
+    override function create() 
+    {
         FlxG.worldBounds.set(-5000, -5000, 10000, 10000);
 
         _map = new FlxOgmo3Loader(AssetPaths.IntroductionToHaxeFlixel__ogmo, AssetPaths.meleeMap__json);
@@ -50,7 +51,7 @@ class MeleeTestState extends FlxState
 
         _meleeMonsters = new FlxTypedGroup<MeleeMonster>();
         add(_meleeMonsters);
-        _ammountOfMonsters = 0;
+        _amountOfMonsters = 0;
 
         if (_pathFindingAlgo == 1)
         {
@@ -135,7 +136,7 @@ class MeleeTestState extends FlxState
 
     private function spawnMonsters()
     {
-        if (_ammountOfMonsters < _maxMonsters)
+        if (_amountOfMonsters < _maxMonsters)
         {
             var zombiePos: Position = _monsterPos[Random.int(0, _monsterPos.length - 1)];
             _meleeMonsters.add(new MeleeMonster(zombiePos.getX(), zombiePos.getY(), _player, MeleeType.ZOMBIE));
@@ -143,7 +144,7 @@ class MeleeTestState extends FlxState
             var skeletonPos: Position = _monsterPos[Random.int(0, _monsterPos.length - 1)];
             _meleeMonsters.add(new MeleeMonster(skeletonPos.getX(), skeletonPos.getY(), _player, MeleeType.SKELETON));
 
-            _ammountOfMonsters = _ammountOfMonsters + 2;
+            _amountOfMonsters = _amountOfMonsters + 2;
         }
     }
 
