@@ -91,6 +91,7 @@ class MeleeTestState extends FlxState
     override function update(elapsed:Float) {
         if (FlxG.sound.music == null) FlxG.sound.playMusic(_backgroundMusic[Random.int(0, _backgroundMusic.length - 1)], 1, false);
         if (_player.health < 100) _player.health = _player.health + elapsed;
+        if (_player.health > 100) _player.health = 100;
 
         if (_player.health <= 0)
         {
@@ -192,6 +193,7 @@ class MeleeTestState extends FlxState
         {
             monster.kill();
             projectile.kill();
+            _player.health += 20;
 
             switch (monster.getType())
             {

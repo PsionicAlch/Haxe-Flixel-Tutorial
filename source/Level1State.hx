@@ -79,8 +79,9 @@ class Level1State extends FlxState
     {
         if (FlxG.sound.music == null) FlxG.sound.playMusic(_backgroundMusic[Random.int(0, _backgroundMusic.length - 1)], 1, false);
         if (_player.health < 100) _player.health += elapsed;
-        if (_player.health <= 0) FlxG.camera.fade(FlxColor.RED, 0.33, () -> FlxG.resetState());
-        if (_amountOfMonsters <= 0) FlxG.camera.fade(FlxColor.GREEN, 0.33, false, () -> FlxG.switchState(new LevelSelectState()));
+        if (_player.health > 100) _player.health = 100;
+        if (_player.health <= 0) FlxG.camera.fade(FlxColor.RED, 0.33, false, () -> FlxG.switchState(new DeathMenuState(new Level1State())));
+        if (_amountOfMonsters <= 0) FlxG.camera.fade(FlxColor.GREEN, 0.33, false, () -> FlxG.switchState(new WinMenuState(new Level2State())));
 
         _healthBar.value = _player.health;
 
@@ -95,6 +96,7 @@ class Level1State extends FlxState
             {
                 monster.kill();
                 projectile.kill();
+                _amountOfMonsters -= 1;
     
                 switch (monster.getType())
                 {
