@@ -43,13 +43,12 @@ class MeleeTestState extends FlxState
         add(_projectiles);
 
         _player = new Player(0, 0);
-        _map.loadEntities(placePlayer, "player");
+        _map.loadEntities(initEntities, "entities");
         add(_player);
 
         FlxG.camera.follow(_player, TOPDOWN, 1);
 
         _meleeMonsters = new FlxTypedGroup<MeleeMonster>();
-        _map.loadEntities(getMonsterLocations, "melee_monster");
         add(_meleeMonsters);
         _ammountOfMonsters = 0;
 
@@ -121,19 +120,17 @@ class MeleeTestState extends FlxState
         super.update(elapsed);
     }
 
-    private function placePlayer(entity: EntityData)
+    private function initEntities(entity: EntityData)
     {
         if (entity.name == "player")
         {
             _playerRespawnPos = new Position(entity.x, entity.y);
             _player.setPosition(entity.x, entity.y);
         }
-    }
-
-    private function getMonsterLocations(entity: EntityData)
-    {
-        if (entity.name == "melee_monster")
+        else if (entity.name == "melee_monster")
+        {
             _monsterPos.push(new Position(entity.x, entity.y));
+        } 
     }
 
     private function spawnMonsters()

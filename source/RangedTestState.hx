@@ -37,13 +37,12 @@ class RangedTestState extends FlxState
 		add(_projectiles);
 
         _player = new Player(0, 0);
-        _map.loadEntities(placePlayer, "player");
+        _map.loadEntities(initEntities, "entities");
         add(_player);
 
         FlxG.camera.follow(_player, TOPDOWN, 1);
 
         _rangedMonsters = new FlxTypedGroup<RangedMonster>();
-        _map.loadEntities(getMonsterLocations, "melee_monster");
         add(_rangedMonsters);
 
         _healthBar = new FlxBar(0, 0, LEFT_TO_RIGHT, 100, 10, _player, "health", 0, 100, true);
@@ -103,18 +102,14 @@ class RangedTestState extends FlxState
         super.update(elapsed);
     }
 
-    private function placePlayer(entity: EntityData)
+    private function initEntities(entity: EntityData)
     {
         if (entity.name == "player")
         {
             _playerRespawnPos = new Position(entity.x, entity.y);
             _player.setPosition(entity.x, entity.y);
         }
-    }
-
-    private function getMonsterLocations(entity: EntityData)
-    {
-        if (entity.name == "melee_monster")
+        else if (entity.name == "ranged_monster")
         {
             _monsterPos.push(new Position(entity.x, entity.y));
         }

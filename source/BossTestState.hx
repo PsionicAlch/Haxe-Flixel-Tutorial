@@ -37,12 +37,11 @@ class BossTestState extends FlxState
 		add(_projectiles);
 
         _player = new Player(0, 0);
-        _map.loadEntities(placePlayer, "player");
+        _map.loadEntities(initEntities, "entities");
 		add(_player);
 
         FlxG.camera.follow(_player, TOPDOWN, 1);
 
-        _map.loadEntities(getMonsterLocations, "melee_monster");
         var tempSpawnPoint = _bossRespawnPoints[Random.int(0, _bossRespawnPoints.length - 1)];
         _bossMonster = new BossMonster(tempSpawnPoint.getX(), tempSpawnPoint.getY(), _player);
 		add(_bossMonster);
@@ -106,18 +105,14 @@ class BossTestState extends FlxState
         super.update(elapsed);
     }
 
-    private function placePlayer(entity: EntityData)
+    private function initEntities(entity: EntityData)
     {
         if (entity.name == "player")
         {
             _playerRespawnPos = new Position(entity.x, entity.y);
             _player.setPosition(entity.x, entity.y);
         }
-    }
-
-    private function getMonsterLocations(entity: EntityData)
-    {
-        if (entity.name == "melee_monster")
+        else if (entity.name == "boss_monster")
         {
             _bossRespawnPoints.push(new Position(entity.x, entity.y));
         }
