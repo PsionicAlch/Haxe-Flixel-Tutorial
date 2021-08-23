@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="HaxeFlixelTutorial" file="HaxeFlixelTutorial" main="Main" version="0.0.1" company="HaxeFlixel" />
+	<app title="HaxeFlixelTutorial" file="HaxeFlixelTutorial" main="Main" version="0.0.1" company="Questionabel Programming" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -82,4 +82,5 @@
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	<icon path="assets/icons/demon-icon.png"/>
 </project>

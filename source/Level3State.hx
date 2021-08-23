@@ -1,4 +1,3 @@
-import lime.system.BackgroundWorker;
 import flixel.util.FlxColor;
 import MeleeMonster;
 import Projectile;
@@ -125,6 +124,25 @@ class Level3State extends FlxState
             }
         });
 
+        FlxG.overlap(_meleeMonsters, _projectiles, (monster:MeleeMonster, projectile:Projectile) -> 
+        {
+            if (projectile.getSpawner() == _player)
+            {
+                monster.kill();
+                projectile.kill();
+                _amountOfMonsters -= 1;
+
+                _hud.updateHUD(_amountOfMonsters);
+    
+                switch (monster.getType())
+                {
+                    case ZOMBIE:
+                        _soundEffects[9].play();
+                    case SKELETON:
+                        _soundEffects[10].play();
+                }
+            }
+        });
         FlxG.overlap(_rangedMonsters, _projectiles, (monster:RangedMonster, projectile:Projectile) -> 
         {
             if (projectile.getSpawner() == _player)
@@ -150,13 +168,22 @@ class Level3State extends FlxState
         });
         FlxG.collide(_player, _projectiles, (player:Player, projectile:Projectile) -> 
         {
-            projectile.kill();
+            if (projectile.getSpawner() != player)
+            {
+                projectile.kill();
+                player.health = player.health - 10;
+                _soundEffects[4].play();
+            }
+        });
+        FlxG.collide(_player, _meleeMonsters, (player:Player, monster:MeleeMonster) -> 
+        {
             player.health = player.health - 10;
             _soundEffects[4].play();
         });
         FlxG.collide(_player, _rangedMonsters);
         FlxG.collide(_projectiles, _walls, (projectile:Projectile, wall:FlxTilemap) -> projectile.kill());
         FlxG.collide(_player, _walls);
+        FlxG.collide(_meleeMonsters, _walls);
 
         super.update(elapsed);
     }

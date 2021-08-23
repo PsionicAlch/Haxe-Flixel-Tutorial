@@ -142,9 +142,12 @@ class Level2State extends FlxState
         });
         FlxG.collide(_player, _projectiles, (player:Player, projectile:Projectile) -> 
         {
-            projectile.kill();
-            player.health = player.health - 10;
-            _soundEffects[4].play();
+            if (projectile.getSpawner() != player)
+            {
+                projectile.kill();
+                player.health = player.health - 10;
+                _soundEffects[4].play();
+            }
         });
         FlxG.collide(_player, _rangedMonsters);
         FlxG.collide(_projectiles, _walls, (projectile:Projectile, wall:FlxTilemap) -> projectile.kill());
