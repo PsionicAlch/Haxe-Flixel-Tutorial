@@ -216,7 +216,7 @@ class BossLevelState extends FlxState
                     _soundEffects[11].play();
                 }
             });
-            FlxG.collide(_player, _projectiles, (player:Player, projectile:Projectile) -> 
+            FlxG.overlap(_player, _projectiles, (player:Player, projectile:Projectile) -> 
             {
                 if (projectile.getSpawner() != player)
                 {
