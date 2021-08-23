@@ -1,3 +1,5 @@
+import flixel.ui.FlxButton;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import MeleeMonster.MeleeType;
 import flixel.FlxObject;
@@ -20,6 +22,8 @@ class Level1State extends FlxState
     private var _healthBar:FlxBar;
     private var _backgroundMusic:Array<String>;
     private var _soundEffects:Array<FlxSound>;
+    private var _monsterCounter:FlxText;
+    private var _hud:HUD;
 
     override function create()
     {
@@ -72,6 +76,10 @@ class Level1State extends FlxState
             FlxG.sound.load(AssetPaths.zombie_getting_hit__wav, 1, false)
         ];
 
+        _hud = new HUD(_player);
+        _hud.updateHUD(_amountOfMonsters);
+        add(_hud);
+
         super.create();
     }
 
@@ -97,6 +105,8 @@ class Level1State extends FlxState
                 monster.kill();
                 projectile.kill();
                 _amountOfMonsters -= 1;
+
+                _hud.updateHUD(_amountOfMonsters);
     
                 switch (monster.getType())
                 {
