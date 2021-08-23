@@ -10,7 +10,7 @@ import flixel.math.FlxPoint;
 class Player extends FlxSprite
 {
 	// A constant to represent how fast the player can move.
-	static inline var MOVEMENT_SPEED:Float = 350;
+	static inline var MOVEMENT_SPEED:Float = 250;
 
 	private var _projectileType: ProjectileType;
 

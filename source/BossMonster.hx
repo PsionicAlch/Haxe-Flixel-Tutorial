@@ -15,7 +15,7 @@ class BossMonster extends FlxSprite
 	private var _shouldFire:Bool;
 	private var _stunVar:Float;
 
-	private static final MOVEMENT_SPEED:Int = 400;
+	private static final MOVEMENT_SPEED:Int = 300;
 
 	public function new(x:Float, y:Float, target:FlxObject)
 	{

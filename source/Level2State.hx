@@ -125,6 +125,8 @@ class Level2State extends FlxState
                 projectile.kill();
                 _amountOfMonsters -= 1;
 
+                _player.health += 20;
+
                 _hud.updateHUD(_amountOfMonsters);
     
                 switch (monster.getProjectileType())
@@ -149,7 +151,6 @@ class Level2State extends FlxState
                 _soundEffects[4].play();
             }
         });
-        FlxG.collide(_player, _rangedMonsters);
         FlxG.collide(_projectiles, _walls, (projectile:Projectile, wall:FlxTilemap) -> projectile.kill());
         FlxG.collide(_player, _walls);
 
