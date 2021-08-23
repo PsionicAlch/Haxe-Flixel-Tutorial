@@ -21,7 +21,6 @@ class Level2State extends FlxState
     private var _healthBar:FlxBar;
     private var _backgroundMusic:Array<String>;
     private var _soundEffects:Array<FlxSound>;
-    private var _monsterCounter:FlxText;
     private var _hud:HUD;
 
     override function create() 
@@ -140,6 +139,12 @@ class Level2State extends FlxState
                         _soundEffects[8].play();
                 }
             }
+        });
+        FlxG.collide(_player, _projectiles, (player:Player, projectile:Projectile) -> 
+        {
+            projectile.kill();
+            player.health = player.health - 10;
+            _soundEffects[4].play();
         });
         FlxG.collide(_player, _rangedMonsters);
         FlxG.collide(_projectiles, _walls, (projectile:Projectile, wall:FlxTilemap) -> projectile.kill());
