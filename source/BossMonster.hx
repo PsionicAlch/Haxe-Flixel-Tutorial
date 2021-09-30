@@ -40,11 +40,11 @@ class BossMonster extends FlxSprite
 	}
 
 	override function update(elapsed:Float)
-	{		
+	{
 		_attackCounter += elapsed;
 		_projectileCounter += elapsed;
 
-		if (_stunVar <= 0.0) 
+		if (_stunVar <= 0.0)
 		{
 			if (_attackCounter >= _attackTimer)
 			{
@@ -55,12 +55,12 @@ class BossMonster extends FlxSprite
 
 			attack(_attackType);
 		}
-		else if (_stunVar > 0.0) 
+		else if (_stunVar > 0.0)
 		{
 			_stunVar -= elapsed;
 		}
 
-		if (_stunVar < 0) 
+		if (_stunVar < 0)
 		{
 			_stunVar = 0;
 		}
@@ -90,7 +90,8 @@ class BossMonster extends FlxSprite
 		return _shouldFire;
 	}
 
-	public function stun() {
+	public function stun()
+	{
 		_stunVar = 2.0;
 	}
 
@@ -197,6 +198,7 @@ class BossMonster extends FlxSprite
 					animation.play("down");
 				case FlxObject.RIGHT:
 					animation.play("right");
+				default:
 			}
 		}
 		else if (velocity.x == 0 || velocity.y == 0)
@@ -211,6 +213,7 @@ class BossMonster extends FlxSprite
 					animation.play("down");
 				case FlxObject.RIGHT:
 					animation.play("right");
+				default:
 			}
 		}
 	}
