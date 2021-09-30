@@ -110,6 +110,7 @@ class MeleeMonster extends FlxSprite
 					animation.play("walking down");
 				case FlxObject.RIGHT:
 					animation.play("walking right");
+				default:
 			}
 		}
 		else if (velocity.x == 0 || velocity.y == 0)
@@ -124,6 +125,7 @@ class MeleeMonster extends FlxSprite
 					animation.play("resting down");
 				case FlxObject.RIGHT:
 					animation.play("resting right");
+				default:
 			}
 		}
 	}
