@@ -150,6 +150,7 @@ class Player extends FlxSprite
 					animation.play("walking down");
 				case FlxObject.RIGHT:
 					animation.play("walking right");
+				default:
 			}
 		}
 		else if (velocity.x == 0 || velocity.y == 0)
@@ -164,6 +165,7 @@ class Player extends FlxSprite
 					animation.play("resting down");
 				case FlxObject.RIGHT:
 					animation.play("resting right");
+				default:
 			}
 		}
 	}
@@ -180,6 +182,7 @@ class Player extends FlxSprite
 				animation.play("attack down");
 			case FlxObject.RIGHT:
 				animation.play("attack right");
+			default:
 		}
 	}
 }
