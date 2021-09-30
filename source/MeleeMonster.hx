@@ -112,6 +112,7 @@ class MeleeMonster extends FlxSprite
 					animation.play("walking down");
 				case FlxObject.RIGHT:
 					animation.play("walking right");
+				default:
 			}
 		}
 		else if (velocity.x == 0 || velocity.y == 0)
@@ -126,6 +127,7 @@ class MeleeMonster extends FlxSprite
 					animation.play("resting down");
 				case FlxObject.RIGHT:
 					animation.play("resting right");
+				default:
 			}
 		}
 	}
@@ -135,7 +137,7 @@ class MeleeMonster extends FlxSprite
 		FlxVelocity.moveTowardsPoint(this, _target.getPosition(), Std.int(_movement_speed));
 	}
 
-	public function getMovementSpeed(): Float
+	public function getMovementSpeed():Float
 	{
 		return this._movement_speed;
 	}
