@@ -180,6 +180,7 @@ class BossMonster extends FlxSprite
 					animation.play("down");
 				case FlxObject.RIGHT:
 					animation.play("right");
+				default:
 			}
 		}
 		else if (velocity.x == 0 || velocity.y == 0)
@@ -194,6 +195,7 @@ class BossMonster extends FlxSprite
 					animation.play("down");
 				case FlxObject.RIGHT:
 					animation.play("right");
+				default:
 			}
 		}
 	}
