@@ -12,7 +12,7 @@ class Player extends FlxSprite
 	// A constant to represent how fast the player can move.
 	static inline var MOVEMENT_SPEED:Float = 350;
 
-	private var _projectileType: ProjectileType;
+	private var _projectileType:ProjectileType;
 
 	/**
 	 * Player class' constructor. Used to set the player's initial position
@@ -155,6 +155,7 @@ class Player extends FlxSprite
 					animation.play("walking down");
 				case FlxObject.RIGHT:
 					animation.play("walking right");
+				default:
 			}
 		}
 		else if (velocity.x == 0 || velocity.y == 0)
@@ -169,6 +170,7 @@ class Player extends FlxSprite
 					animation.play("resting down");
 				case FlxObject.RIGHT:
 					animation.play("resting right");
+				default:
 			}
 		}
 	}
@@ -185,15 +187,16 @@ class Player extends FlxSprite
 				animation.play("attack down");
 			case FlxObject.RIGHT:
 				animation.play("attack right");
+			default:
 		}
 	}
 
-	public function setProjectileType(projectileType: ProjectileType)
+	public function setProjectileType(projectileType:ProjectileType)
 	{
 		this._projectileType = projectileType;
 	}
 
-	public function getProjectileType(): ProjectileType
+	public function getProjectileType():ProjectileType
 	{
 		return this._projectileType;
 	}
